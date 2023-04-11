@@ -6,4 +6,5 @@ import com.natan.apitarefas.dto.UsuarioDto;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioDto, Long>{
 
+    public UsuarioDto findByEmail(String email);
 }
