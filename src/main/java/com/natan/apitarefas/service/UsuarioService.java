@@ -11,26 +11,26 @@ import com.natan.apitarefas.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    
-    public UsuarioDto salvar(UsuarioDto dto){
-        return usuarioRepository.save(dto);
-    }
+  @Autowired
+  private UsuarioRepository usuarioRepository;
 
-    public void deletarPorId(Long id) {
-		usuarioRepository.deleteById(id);
-	}
+  public UsuarioDto salvar(UsuarioDto dto) {
+    return usuarioRepository.save(dto);
+  }
 
-    public Optional<UsuarioDto> buscarPorId(Long id) {
-		return usuarioRepository.findById(id);
-	}
+  public void deletarPorId(Long id) {
+    usuarioRepository.deleteById(id);
+  }
 
-    public UsuarioDto buscarPorEmail(String email) {
-		return usuarioRepository.findByEmail(email);
-	}
+  public Optional<UsuarioDto> buscarPorId(Long id) {
+    return usuarioRepository.findById(id);
+  }
 
-    public List<UsuarioDto> listar(){		
-		return usuarioRepository.findAll();
-	}
+  public UsuarioDto buscarPorEmail(String email) {
+    return usuarioRepository.findByEmail(email);
+  }
+
+  public List<UsuarioDto> listar() {
+    return usuarioRepository.findAll();
+  }
 }
