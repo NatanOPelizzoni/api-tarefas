@@ -1,5 +1,7 @@
 package com.natan.apitarefas.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +16,12 @@ public class UsuarioService {
     public UsuarioDto salvar(UsuarioDto dto){
         return usuarioRepository.save(dto);
     }
+
+    public void deletarPorId(Long id) {
+		usuarioRepository.deleteById(id);
+	}
+
+    public Optional<UsuarioDto> buscarPorId(Long id) {
+		return usuarioRepository.findById(id);
+	}
 }
