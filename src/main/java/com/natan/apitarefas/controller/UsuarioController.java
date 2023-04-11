@@ -1,6 +1,7 @@
 package com.natan.apitarefas.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -118,4 +120,36 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body("Email e senha são obrigatórios");
         }
     }
+
+    @GetMapping(value = "/listar")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<UsuarioDto>> listar(@RequestHeader(value = "Authorization", required = false) String token) {
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        try {
+            TokenJWT.validarToken(token);
+            List<UsuarioDto> usuarios = UsuarioService.listar();
+            return ResponseEntity.ok().body(usuarios);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    
+    @GetMapping(value = "/buscar/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> buscar(@PathVariable("id") Long id, 
+            @RequestHeader(value = "Authorization", required = false) String token) {
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token é obrigatório");
+        }
+        try {
+            TokenJWT.validarToken(token);
+            UsuarioDto usuario = UsuarioService.buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario não encontrado."));
+            return ResponseEntity.ok().body(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar usuário: " + e.getMessage());
+        }
+    }
+    
 }

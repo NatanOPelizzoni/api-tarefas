@@ -1,5 +1,6 @@
 package com.natan.apitarefas.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,9 @@ public class UsuarioService {
 
     public UsuarioDto buscarPorEmail(String email) {
 		return usuarioRepository.findByEmail(email);
+	}
+
+    public List<UsuarioDto> listar(){		
+		return usuarioRepository.findAll();
 	}
 }
