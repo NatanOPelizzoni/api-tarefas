@@ -60,14 +60,14 @@ public class TokenJWT {
     /**
 	 * Método responsável por processar a geração do token jwt
 	 *
-	 * @param usuario
+	 * @param usuarioEmail
 	 * @return
 	 */
-	public static String processarTokenJWT(String usuario) {
+	public static String processarTokenJWT(String usuarioEmail) {
 		Key chave = gerarChave();
 		TokenJWT token = new TokenJWT(chave);
 		Date dataExpiracao = definirDataDeExpiracao(30L);
-		return token.gerarToken(usuario, dataExpiracao);
+		return token.gerarToken(usuarioEmail, dataExpiracao);
 	}
 
     /**
@@ -102,16 +102,16 @@ public class TokenJWT {
     /**
 	 * Gerando token JWT
 	 *
-	 * @param nomeUsuario
+	 * @param usuarioEmail
 	 * @param dataExpiracao
 	 * @return
 	 */
-	public String gerarToken(String nomeUsuario, Date dataExpiracao) {
+	public String gerarToken(String usuarioEmail, Date dataExpiracao) {
 		return Jwts.builder().setHeaderParam("typ", "JWT") // definindo cabeçalho
-				.setSubject(nomeUsuario) // assunto do token
-				.setIssuer("upf") // quem é o emissor do token
+				.setSubject(usuarioEmail) // assunto do token
+				.setIssuer("api-tarefas") // quem é o emissor do token
 				.setIssuedAt(new Date()) // data de criação
-				.claim("password", "sdlkjsdoijonpvf65v4e6fv5e6ver")
+				.claim("password", "senhasupersecreta")
 				.setExpiration(dataExpiracao) // data de expiração do token
 				.signWith(chave, SignatureAlgorithm.HS256) // assinatura do token
 				.compact(); // contruir o JWT;

@@ -1,2 +1,2 @@
-INSERT INTO public.tb_usuario(id, email, nome, senha) VALUES (1, 'natan2624@gmail.com', 'Natan O. Pelizzoni', 'a1b2c3');
-INSERT INTO public.tb_usuario(id, email, nome, senha) VALUES (2, '178332@upf.br', 'Natan O. Pelizzoni', '3c2b1c');
+INSERT INTO public.tb_usuario(id, email, nome, senha) VALUES (DEFAULT, 'natan2624@gmail.com', 'Natan O. Pelizzoni', 'a1b2c3');
+INSERT INTO public.tb_usuario(id, email, nome, senha) VALUES (DEFAULT, '178332@upf.br', 'Natan O. Pelizzoni', '3c2b1c');

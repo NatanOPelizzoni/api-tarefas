@@ -10,7 +10,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,8 +36,12 @@ public class UsuarioController {
 
     @PostMapping(value = "/inserir")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> inserir(@RequestBody UsuarioDto usuario) {
+    public ResponseEntity<Object> inserir(@RequestBody UsuarioDto usuario, @RequestHeader(value = "Authorization", required = false) String token) {
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token é obrigatório");
+        }
         try {
+            TokenJWT.validarToken(token);
             UsuarioDto usuarioSalvo = UsuarioService.salvar(usuario);
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("id", usuarioSalvo.getId());
@@ -58,8 +61,12 @@ public class UsuarioController {
     
     @DeleteMapping("/deletar/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<String> deletar(@PathVariable Long id) {
+    public ResponseEntity<String> deletar(@PathVariable Long id, @RequestHeader(value = "Authorization", required = false) String token) {
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token é obrigatório");
+        }
         try {
+            TokenJWT.validarToken(token);
             UsuarioService.buscarPorId(id)
             .map(usuario -> {
                 UsuarioService.deletarPorId(usuario.getId());
@@ -75,12 +82,20 @@ public class UsuarioController {
 
     @PutMapping(value = "/atualizar")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UsuarioDto> atualizar(@RequestBody UsuarioDto usuario) {
-        return UsuarioService.buscarPorId(usuario.getId()).map(usuarioBase -> {
-            modelMapper.map(usuario, usuarioBase);
-            UsuarioDto usuarioSalvo = UsuarioService.salvar(usuarioBase);
-            return ResponseEntity.ok(usuarioSalvo);
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario não encontrado."));
+    public Object atualizar(@RequestBody UsuarioDto usuario, @RequestHeader(value = "Authorization", required = false) String token) {
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token é obrigatório");
+        }
+        try {
+            TokenJWT.validarToken(token);
+            return UsuarioService.buscarPorId(usuario.getId()).map(usuarioBase -> {
+                modelMapper.map(usuario, usuarioBase);
+                UsuarioDto usuarioSalvo = UsuarioService.salvar(usuarioBase);
+                return ResponseEntity.ok(usuarioSalvo);
+            }).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario não encontrado."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar usuário: " + e.getMessage());
+        }
     }
     
     @PostMapping(value = "/login")
