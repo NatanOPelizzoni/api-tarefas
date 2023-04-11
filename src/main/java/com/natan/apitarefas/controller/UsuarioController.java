@@ -3,6 +3,7 @@ package com.natan.apitarefas.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,6 +28,8 @@ public class UsuarioController {
     @Autowired
     private UsuarioService UsuarioService;
 
+    @Autowired
+	private ModelMapper modelMapper;
 
     @PostMapping(value = "/inserir")
     @ResponseStatus(HttpStatus.CREATED)
@@ -64,4 +68,15 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao deletar usuário: " + e.getMessage());
         }
     }
+
+    @PutMapping(value = "/atualizar")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<UsuarioDto> atualizar(@RequestBody UsuarioDto usuario) {
+        return UsuarioService.buscarPorId(usuario.getId()).map(usuarioBase -> {
+            modelMapper.map(usuario, usuarioBase);
+            UsuarioDto usuarioSalvo = UsuarioService.salvar(usuarioBase);
+            return ResponseEntity.ok(usuarioSalvo);
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario não encontrado."));
+    }
+    
 }
