@@ -29,4 +29,8 @@ public class TarefaService {
   public List<TarefaDto> listar() {
     return tarefaRepository.findAll();
   }
+
+  public List<TarefaDto> listarTarefasPorUsuario(Long id){
+    return tarefaRepository.listarTarefasPorUsuario(id);
+  }
 }

@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.natan.apitarefas.dto.LoginDto;
+import com.natan.apitarefas.dto.TarefaDto;
 import com.natan.apitarefas.dto.UsuarioDto;
+import com.natan.apitarefas.service.TarefaService;
 import com.natan.apitarefas.service.UsuarioService;
 import com.natan.apitarefas.utils.TokenJWT;
 
@@ -32,6 +34,9 @@ import com.natan.apitarefas.utils.TokenJWT;
 public class UsuarioController {
     @Autowired
     private UsuarioService UsuarioService;
+
+    @Autowired
+    private TarefaService tarefaService;
 
     @Autowired
 	private ModelMapper modelMapper;
@@ -138,8 +143,7 @@ public class UsuarioController {
     
     @GetMapping(value = "/buscar/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> buscar(@PathVariable("id") Long id, 
-            @RequestHeader(value = "Authorization", required = false) String token) {
+    public ResponseEntity<Object> buscar(@PathVariable("id") Long id, @RequestHeader(value = "Authorization", required = false) String token) {
         if (token == null || token.isEmpty()) {
             return ResponseEntity.badRequest().body("Token é obrigatório");
         }
@@ -147,6 +151,23 @@ public class UsuarioController {
             TokenJWT.validarToken(token);
             UsuarioDto usuario = UsuarioService.buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario não encontrado."));
             return ResponseEntity.ok().body(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar usuário: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping(value = "/listar-tarefas/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Object> listarTarefas(@PathVariable("id") Long id, @RequestHeader(value = "Authorization", required = false) String token) {
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token é obrigatório");
+        }
+        try {
+            TokenJWT.validarToken(token);
+            UsuarioDto usuario = UsuarioService.buscarPorId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuario não encontrado."));
+
+            List<TarefaDto> tarefas = tarefaService.listarTarefasPorUsuario(usuario.getId());
+            return ResponseEntity.ok().body(tarefas);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar usuário: " + e.getMessage());
         }
