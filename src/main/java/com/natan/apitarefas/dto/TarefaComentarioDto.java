@@ -1,5 +1,8 @@
 package com.natan.apitarefas.dto;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,11 +30,13 @@ public class TarefaComentarioDto {
     @Column(name = "comentario", nullable = false)
     private String comentario;
 
-    @ManyToOne
+	@ManyToOne
+    @Cascade(CascadeType.DELETE)
     @JoinColumn(name = "tarefa_id")
     private TarefaDto tarefa;
-    
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private UsuarioDto usuario;
+
+	@ManyToOne
+    @Cascade(CascadeType.DELETE)
+	@JoinColumn(name = "usuario_id")
+	private UsuarioDto usuario;
 }
