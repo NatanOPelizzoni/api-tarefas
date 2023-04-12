@@ -11,23 +11,22 @@ import com.natan.apitarefas.repository.TarefaRepository;
 
 @Service
 public class TarefaService {
-    @Autowired
-    private TarefaRepository tarefaRepository;
-    
+  @Autowired
+  private TarefaRepository tarefaRepository;
 
-    public TarefaDto salvar(TarefaDto dto) {
-        return tarefaRepository.save(dto);
-      }
-    
-      public void deletarPorId(Long id) {
-        tarefaRepository.deleteById(id);
-      }
-    
-      public Optional<TarefaDto> buscarPorId(Long id) {
-        return tarefaRepository.findById(id);
-      }
-      
-      public List<TarefaDto> listar() {
-        return tarefaRepository.findAll();
-      }
+  public TarefaDto salvar(TarefaDto dto) {
+    return tarefaRepository.save(dto);
+  }
+
+  public void deletarPorId(Long id) {
+    tarefaRepository.deleteById(id);
+  }
+
+  public Optional<TarefaDto> buscarPorId(Long id) {
+    return tarefaRepository.findById(id);
+  }
+
+  public List<TarefaDto> listar() {
+    return tarefaRepository.findAll();
+  }
 }
