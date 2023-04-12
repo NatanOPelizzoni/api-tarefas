@@ -7,3 +7,8 @@ INSERT INTO public.tb_tarefa(id, titulo, conteudo, usuario_id) VALUES (DEFAULT, 
 INSERT INTO public.tb_tarefa(id, titulo, conteudo, usuario_id) VALUES (DEFAULT, 'Tarefa 4', NULL, 2);
 INSERT INTO public.tb_tarefa(id, titulo, conteudo, usuario_id) VALUES (DEFAULT, 'Tarefa 5', 'Conteúdo da tarefa 5', 1);
 INSERT INTO public.tb_tarefa(id, titulo, conteudo, usuario_id) VALUES (DEFAULT, 'Tarefa 6', 'Conteúdo da tarefa 6', 1);
+
+INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 1 para a tarefa 1', 1, 1);
+INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 2 para a tarefa 1', 2, 1);
+INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 1 para a tarefa 2', 1, 2);
+INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 2 para a tarefa 2', 2, 2);
