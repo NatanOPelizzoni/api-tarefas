@@ -30,8 +30,8 @@ public class TarefaComentarioDto {
     @ManyToOne
     @JoinColumn(name = "tarefa_id")
     private TarefaDto tarefa;
-
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private UsuarioDto usuario;
+    
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private UsuarioDto usuario;
 }

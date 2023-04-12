@@ -12,3 +12,4 @@ INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) V
 INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 2 para a tarefa 1', 2, 1);
 INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 1 para a tarefa 2', 1, 2);
 INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 2 para a tarefa 2', 2, 2);
+INSERT INTO public.tb_tarefa_comentario(id, comentario, usuario_id, tarefa_id) VALUES (DEFAULT, 'Comentario do usuario 2 para a tarefa 3', 2, 3);
